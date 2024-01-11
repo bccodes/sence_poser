@@ -20,7 +20,7 @@ setup(
     tests_require=['pytest'],
     entry_points={
         'console_scripts': [
-                'pose_menu = sence_poser.pose_menu:main',
+                'sence_poser = sence_poser.sence_poser:main',
         ],
     },
 )
