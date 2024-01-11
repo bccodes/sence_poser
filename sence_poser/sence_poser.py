@@ -1,6 +1,7 @@
 import rclpy
 from rclpy.node import Node
 from math import pi
+from time import sleep
 
 from trajectory_msgs.msg import JointTrajectory, JointTrajectoryPoint
 
@@ -20,6 +21,18 @@ crabStandPose = [-pi/2, pi/8, pi/6,
                  pi/2, -pi/8, pi/6,
                  pi/2, -pi/8, pi/6,
                  -pi/2, pi/8, pi/6]
+dogReadyPose = [pi/2, 0.0, 0.0,
+               -pi/2, 0.0, 0.0,
+               -pi/2, 0.0, 0.0,
+               pi/2, 0.0, 0.0]
+dogFlatPose = [1.4, -pi/2, 0.2,
+               -1.4, pi/2, 0.2,
+               -1.8, -1.3, 0.2,
+               1.8, 1.3, 0.2]
+dogStandPose = [-0.9, -pi/2, 1.9,
+               0.9, pi/2, 1.9,
+               -4.0, -pi/2, 1.9,
+               4.0, pi/2, 1.9]
 
 class TrajectoryPublisher(Node):
     def __init__(self):
@@ -36,6 +49,9 @@ class TrajectoryPublisher(Node):
                 1: flat
                 2: curl
                 3: crab stand
+                4: dog ready
+                5: dog flat
+                6: dog stand
                 9: set time to pose
                 0: quit""".format(ttp=self.poseTime)
                 )
@@ -49,6 +65,15 @@ class TrajectoryPublisher(Node):
                         self.publishPose()
                     case 3:
                         self.pose = crabStandPose
+                        self.publishPose()
+                    case 4:
+                        self.pose = dogReadyPose
+                        self.publishPose()
+                    case 5:
+                        self.pose = dogFlatPose
+                        self.publishPose()
+                    case 6:
+                        self.pose = dogStandPose
                         self.publishPose()
                     case 9:
                         self.changeSpeed()
