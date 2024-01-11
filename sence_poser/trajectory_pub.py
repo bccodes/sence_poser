@@ -18,7 +18,7 @@ class TrajectoryPublisher(Node):
     def poseMenu(self):
         while (True):
             try:
-                print("""sence pose publisher
+                print("""sence trajectory publisher
     1: flat
     2: curl
     3: crab stand

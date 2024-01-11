@@ -20,7 +20,7 @@ setup(
     tests_require=['pytest'],
     entry_points={
         'console_scripts': [
-                'sence_poser = sence_poser.sence_poser:main',
+                'trajectory_pub = sence_poser.trajectory_pub:main',
         ],
     },
 )
