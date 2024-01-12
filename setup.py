@@ -21,6 +21,7 @@ setup(
     entry_points={
         'console_scripts': [
                 'trajectory_pub = sence_poser.trajectory_pub:main',
+                'action_test = sence_poser.action_test:main',
         ],
     },
 )

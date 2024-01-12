@@ -1,5 +1,10 @@
 from math import pi
 
+jointNames = ['fl_joint1', 'fl_joint2', 'fl_joint3',
+              'fr_joint1', 'fr_joint2', 'fr_joint3',
+              'bl_joint1', 'bl_joint2', 'bl_joint3',
+              'br_joint1', 'br_joint2', 'br_joint3']
+
 flatPose = [0.0, 0.0, 0.0,
             0.0, 0.0, 0.0,
             0.0, 0.0, 0.0,

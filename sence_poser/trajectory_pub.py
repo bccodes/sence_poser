@@ -1,13 +1,10 @@
 import rclpy
 from rclpy.node import Node
-from .poses import *
+from .sence_poses import *
 
 from trajectory_msgs.msg import JointTrajectory, JointTrajectoryPoint
 
-jointNames = ['fl_joint1', 'fl_joint2', 'fl_joint3',
-              'fr_joint1', 'fr_joint2', 'fr_joint3',
-              'bl_joint1', 'bl_joint2', 'bl_joint3',
-              'br_joint1', 'br_joint2', 'br_joint3']
+
 
 class TrajectoryPublisher(Node):
     def __init__(self):
