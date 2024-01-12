@@ -18,7 +18,7 @@ class MinimalActionClient(Node):
         super().__init__('minimal_action_client')
         self._action_client = ActionClient(self, FollowJointTrajectory, '/joint_trajectory_controller/follow_joint_trajectory')
 
-        self.poseTime = 1
+        self.poseTime = 3
 
 
     def goal_response_callback(self, future):
@@ -33,8 +33,9 @@ class MinimalActionClient(Node):
         self._get_result_future.add_done_callback(self.get_result_callback)
 
     def feedback_callback(self, feedback):
-        rounded_error = round (feedback.feedback.error.positions, 4)
-        self.get_logger().info('Received feedback: Error = {0}'.format(rounded_error))
+        #rounded_actual = round (feedback.feedback.actual.positions, 4)
+        self.get_logger().info('Received feedback')
+        #self.get_logger().info('{0}'.format(rounded_error))
 
     def get_result_callback(self, future):
         result = future.result().result
@@ -47,11 +48,9 @@ class MinimalActionClient(Node):
         # Shutdown after receiving a result
         rclpy.shutdown()
 
-    def send_goal(self):
+    def send_goal(self, goal_pose):
         self.get_logger().info('Waiting for action server...')
         self._action_client.wait_for_server()
-
-        goal_pose = crabStandPose
 
         goal_msg = FollowJointTrajectory.Goal()
         goal_msg.trajectory = self.getTrajectoryMsg(goal_pose)
@@ -80,7 +79,7 @@ def main(args=None):
 
     action_client = MinimalActionClient()
 
-    action_client.send_goal()
+    action_client.send_goal(crabStandPose)
 
     rclpy.spin(action_client)
 
