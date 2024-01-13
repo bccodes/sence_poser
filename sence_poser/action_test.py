@@ -18,7 +18,9 @@ class MinimalActionClient(Node):
         super().__init__('minimal_action_client')
         self._action_client = ActionClient(self, FollowJointTrajectory, '/joint_trajectory_controller/follow_joint_trajectory')
 
-        self.poseTime = 3
+        self.poseSec = 0
+        self.poseNanosec = 500000000 #half second
+
 
 
     def goal_response_callback(self, future):
@@ -68,7 +70,8 @@ class MinimalActionClient(Node):
         msg.joint_names = jointNames
         point1 = JointTrajectoryPoint()
         point1.positions = pose
-        point1.time_from_start.sec = self.poseTime
+        point1.time_from_start.sec = self.poseSec
+        point1.time_from_start.nanosec = self.poseNanosec
         msg.points.append(point1)
 
         return msg
