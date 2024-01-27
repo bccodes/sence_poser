@@ -48,7 +48,7 @@ class MinimalActionClient(Node):
             self.get_logger().info('Goal failed with status: {0}'.format(status))
 
         # Shutdown after receiving a result
-        rclpy.shutdown()
+        # rclpy.shutdown()
 
     def send_goal(self, goal_pose):
         self.get_logger().info('Waiting for action server...')
