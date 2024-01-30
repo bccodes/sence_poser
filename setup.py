@@ -23,6 +23,8 @@ setup(
                 'trajectory_pub = sence_poser.trajectory_pub:main',
                 'action_test = sence_poser.action_test:main',
                 'pose_action_server = sence_poser.pose_action_server:main',
+                'pose_client = sence_poser.pose_client:main',
+
         ],
     },
 )
