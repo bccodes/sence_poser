@@ -8,27 +8,29 @@ from action_msgs.msg import GoalStatus
 
 from sence_msgs.action import StaticPose
 
-from .sence_poses import jointNames, poses
+from .sence_poses import jointNames, poses, poseSec, poseNano
 
 
 class PoseActionServer(Node):
     def __init__(self):
         # start the node
         super().__init__('pose_action_server')
+        
         # start the pose action server
         self.pose_action_server = ActionServer(
             self,
             StaticPose,
             'static_pose',
             self.execute_callback)
-        # print out the available poses
-        self.get_logger().info('available poses: ' + str(list(poses.keys()))[1:-1])
 
         # start the joint trajectory action client
         self.jta_client = ActionClient(
             self,
             FollowJointTrajectory,
             '/joint_trajectory_controller/follow_joint_trajectory')
+        
+        # print out the available poses
+        self.get_logger().info('available poses: ' + str(list(poses.keys()))[1:-1])
 
 
     def execute_callback(self, goal_handle):
@@ -53,7 +55,7 @@ class PoseActionServer(Node):
         self.get_logger().info('Sending goal request...')
         self._send_goal_future = self.jta_client.send_goal_async(goal_msg)
 
-        return self.jta_client.send_goal_async(goal_msg)
+        return
 
 
     def getTrajectoryMsg(self, pose):
@@ -61,8 +63,8 @@ class PoseActionServer(Node):
         msg.joint_names = jointNames
         point1 = JointTrajectoryPoint()
         point1.positions = pose
-        point1.time_from_start.sec = 0
-        point1.time_from_start.nanosec = 500000000 # .5 second
+        point1.time_from_start.sec = poseSec
+        point1.time_from_start.nanosec = poseNano # .5 second
         msg.points.append(point1)
         return msg
 

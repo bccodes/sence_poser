@@ -8,7 +8,7 @@ from action_msgs.msg import GoalStatus
 
 from sence_msgs.action import StaticPose, PoseSequence
 
-from .sence_poses import jointNames, poses, sequences
+from .sence_poses import jointNames, poses, sequences, poseSec, poseNano
 
 
 class SequenceActionServer(Node):
@@ -22,14 +22,15 @@ class SequenceActionServer(Node):
             PoseSequence,
             'pose_sequence',
             self.execute_callback)
-        # print out the available sequences
-        self.get_logger().info('available sequences: ' + str(list(sequences.keys()))[1:-1])
 
         # start the joint trajectory action client
         self.jta_client = ActionClient(
             self,
             FollowJointTrajectory,
             '/joint_trajectory_controller/follow_joint_trajectory')
+        
+        # print out the available sequences
+        self.get_logger().info('available sequences: ' + str(list(sequences.keys()))[1:-1])
 
 
     def execute_callback(self, goal_handle):
@@ -55,13 +56,16 @@ class SequenceActionServer(Node):
 
         
         for (index, pose) in list(enumerate(sequences[goal_sequence])):
+            self.get_logger().info('adding trajectory point ' + index + " " "data " + pose)
             point = JointTrajectoryPoint()
             point.positions = pose
-            point.time_from_start.sec = 0
-            point.time_from_start.nanosec = 500000000 + index * 500000000 # .5 seconds per pose
+            point.time_from_start.sec = poseSec
+            point.time_from_start.nanosec = poseNano + index * poseNano
             goal_msg.trajectory.points.append(point)
 
         self.get_logger().info('Sending goal request...')
+        self.get_logger().info(goal_msg)
+
         self._send_goal_future = self.jta_client.send_goal_async(goal_msg)
 
         return

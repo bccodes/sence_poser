@@ -9,7 +9,7 @@ from .sence_poses import poses, sequences
 
 class SenceActionMenu(Node):
     def __init__(self):
-        super().__init__('pose_client_menu')
+        super().__init__('sence_action_menu')
 
         print("""Sence Action Menu
 0. Pose Client

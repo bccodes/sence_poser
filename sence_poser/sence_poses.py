@@ -1,5 +1,8 @@
 from math import pi
 
+poseSec = 0
+poseNano = 500_000_000
+
 jointNames = ['fl_joint1', 'fl_joint2', 'fl_joint3',
               'fr_joint1', 'fr_joint2', 'fr_joint3',
               'bl_joint1', 'bl_joint2', 'bl_joint3',
