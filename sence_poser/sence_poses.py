@@ -67,8 +67,18 @@ poses = {
             0.0, 0.0, 0.0,
             0.0, 0.0, 0.0,
             0.0, 0.0, 0.0],
-    "crab_stand": [-pi/2, pi/8, pi/6,
+    "crab_stand_short": [-pi/2, pi/8, pi/8,
+                 pi/2, -pi/8, pi/8,
+                 pi/2, -pi/8, pi/8,
+                 -pi/2, pi/8, pi/8],
+    "crab_stand_tall": [-pi/2, pi/8, pi/6,
                  pi/2, -pi/8, pi/6,
                  pi/2, -pi/8, pi/6,
-                 -pi/2, pi/8, pi/6]
+                 -pi/2, pi/8, pi/6],
+}
+
+sequences = {
+    "crab_stand_up": ["flat",
+                      "crab_stand_short", 
+                      "crab_stand_tall"]
 }
