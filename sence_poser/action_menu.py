@@ -11,11 +11,10 @@ class SenceActionMenu(Node):
     def __init__(self):
         super().__init__('sence_action_menu')
 
-        print("""Sence Action Menu
+        while True:
+            print("""Sence Action Menu
 0. Pose Client
 1. Sequence Client""")
-
-        while True:
             try:
                 choice = int(input(">> "))
                 match choice:
@@ -39,14 +38,16 @@ class SenceActionMenu(Node):
         self.pose_action_client.wait_for_server()
 
         enumerated_poses = list(enumerate(list(poses.keys())))
-
         while True:
             for (index, pose) in enumerated_poses:
                 print(f"{index}. {pose}")
+            print("Enter a pose (q to return)")
 
             try:
-                response = int(input(">> "))
-                selected_pose = enumerated_poses[response][1]
+                response = input(">> ")
+                if response == "q":
+                    break                
+                selected_pose = enumerated_poses[int(response)][1]
 
                 goal_msg = StaticPose.Goal()
                 goal_msg.pose = selected_pose
@@ -70,15 +71,19 @@ class SenceActionMenu(Node):
         enumerated_sequences = list(enumerate(list(sequences.keys())))
 
         while True:
-            for (index, pose) in enumerated_sequences:
-                print(f"{index}. {pose}")
+            for (index, sequence) in enumerated_sequences:
+                print(f"{index}. {sequence}")
+            print("Enter a sequence (q to return)")
 
             try:
-                response = int(input(">> "))
-                selected_pose = enumerated_sequences[response][1]
+                response = input(">> ")
+                if response == "q":
+                    break
 
-                goal_msg = StaticPose.Goal()
-                goal_msg.pose = selected_pose
+                selected_sequence = enumerated_sequences[int(response)][1]
+
+                goal_msg = PoseSequence.Goal()
+                goal_msg.sequence = selected_sequence
 
                 self.get_logger().info('Sending goal request...')
                 print(self.sequence_action_client.send_goal_async(goal_msg))

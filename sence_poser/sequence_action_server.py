@@ -39,10 +39,10 @@ class SequenceActionServer(Node):
 
         self.get_logger().info('Running Sequence: ' + goal_handle.request.sequence)
 
-        self.run_sequence(sequences[goal_handle.request.sequence])
+        self.run_sequence(goal_handle.request.sequence)
 
         goal_handle.succeed()
-        result = StaticPose.Result()
+        result = PoseSequence.Result()
         result.success = True #todo test for success
 
         return result
@@ -53,22 +53,41 @@ class SequenceActionServer(Node):
 
         goal_msg.trajectory = JointTrajectory()
         goal_msg.trajectory.joint_names = jointNames
-
         
         for (index, pose) in list(enumerate(sequences[goal_sequence])):
-            self.get_logger().info('adding trajectory point ' + index + " " "data " + pose)
+            self.get_logger().info('adding trajectory point ' + str(index) + " " "pose " + str(pose))
             point = JointTrajectoryPoint()
-            point.positions = pose
+            point.positions = poses[pose]
             point.time_from_start.sec = poseSec
             point.time_from_start.nanosec = poseNano + index * poseNano
             goal_msg.trajectory.points.append(point)
 
         self.get_logger().info('Sending goal request...')
-        self.get_logger().info(goal_msg)
 
         self._send_goal_future = self.jta_client.send_goal_async(goal_msg)
 
+        self._send_goal_future.add_done_callback(self.goal_response_callback)
+
         return
+    
+
+    def goal_response_callback(self, future):
+        goal_handle = future.result()
+        if not goal_handle.accepted:
+            self.get_logger().info('Goal rejected :(')
+            return
+
+        self.get_logger().info('Goal accepted :)')
+
+        self._get_result_future = goal_handle.get_result_async()
+        self._get_result_future.add_done_callback(self.get_result_callback)
+
+    def get_result_callback(self, future):
+        result = future.result().result
+        self.get_logger().info(f'Got result: {result.error_string}')
+
+        if result.error_string:
+            self.get_logger().info(f'Goal Error: {result.error_string}')
 
 
 def main(args=None):
